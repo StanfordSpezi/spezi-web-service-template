@@ -1,0 +1,49 @@
+config:
+  configFile: |-
+    provider = "keycloak-oidc"
+    oidc_issuer_url = "{{ '/'.join(SPEZI_SERVICE_FQDN, 'auth/realms/', SPEZI_SERVICE_NAME) }}"
+    email_domains = ["*"]
+    upstreams = ["static://200"]
+    scope = "openid profile email groups"
+    cookie_domains = ["{{ SPEZI_SERVICE_FQDN }}"]
+    redirect_url = ""{{ '/'.join(SPEZI_SERVICE_FQDN, 'oauth2/callback') }}
+
+# self-managed ingress
+ingress:
+  enabled: false
+
+extraArgs:
+  - --skip-provider-button=true
+  - --whitelist-domain={{ SPEZI_SERVICE_FQDN }}
+  - --allowed-role={{ SPEZI_SERVICE_NAME }}-authorized-users
+  - --pass-access-token=true
+  - --cookie-csrf-expire=60m
+  - --pass-authorization-header=true
+  - --set-xauthrequest=true
+  - --code-challenge-method=S256
+
+# needed to avoid 400 Bad Req - Cookie Too Large
+redis:
+  enabled: true
+  architecture: standalone
+sessionStorage:
+  type: redis
+
+extraEnv:
+  - name: OAUTH2_PROXY_REVERSE_PROXY
+    value: "true"
+  - name: OAUTH2_PROXY_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: oauth2-proxy-secret
+        key: client-id
+  - name: OAUTH2_PROXY_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: oauth2-proxy-secret
+        key: client-secret
+  - name: OAUTH2_PROXY_COOKIE_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: oauth2-proxy-secret
+        key: cookie-secret

@@ -1,0 +1,16 @@
+# currently requires manual setup: https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs
+provider "keycloak" {
+    client_id     = "tofu"
+    # TODO: get this automatically from the template/setup.
+    client_secret = ""
+    url           = "{{ '/'.join(SPEZI_SERVICE_FQDN, 'auth') }}"
+}
+
+terraform {
+    required_providers {
+        keycloak = {
+            source = "mrparkers/keycloak"
+            version = ">= 4.0.0"
+        }
+    }
+}

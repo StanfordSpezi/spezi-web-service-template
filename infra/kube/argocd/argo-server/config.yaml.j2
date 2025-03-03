@@ -1,0 +1,25 @@
+# TODO: configure here someday: https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml#L211 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: {{ SPEZI_SERVICE_NAME }}
+data:
+  url: {{ SPEZI_SERVICE_FQDN }}
+  statusbadge.enabled: "true"
+  oidc.config: |
+    name: Keycloak
+    issuer: {{ SPEZI_SERVICE_FQDN }}/auth/realms/{{ SPEZI_SERVICE_NAME }}-secret
+    clientID: argocd
+    clientSecret: $oidc-secret:oidc.keycloak.clientSecret
+    requestedScopes: ["openid", "profile", "email", "groups"]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: {{ SPEZI_SERVICE_NAME }}
+data:
+  policy.default: role:''
+  policy.csv: |
+    g, ArgoCDAdmins, role:admin

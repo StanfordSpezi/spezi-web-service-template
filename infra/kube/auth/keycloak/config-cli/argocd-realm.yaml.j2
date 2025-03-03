@@ -1,0 +1,72 @@
+realm: "{{ SPEZI_SERVICE_NAME }}"
+clients:
+  - clientId: argocd
+    name: "ArgoCD"
+    description: ""
+    rootUrl: "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
+    adminUrl: "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
+    baseUrl: "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
+    surrogateAuthRequired: false
+    enabled: true
+    alwaysDisplayInConsole: false
+    clientAuthenticatorType: "client-secret"
+    secret: ${ARGOCD_OAUTH_CLIENT_SECRET}
+    redirectUris:
+      - "{{ '/'.join(SPEZI_SERVICE_FQDN, argo/auth/callback) }}"
+    webOrigins:
+      - "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
+    notBefore: 0
+    bearerOnly: false
+    consentRequired: false
+    standardFlowEnabled: true
+    implicitFlowEnabled: false
+    directAccessGrantsEnabled: true
+    serviceAccountsEnabled: false
+    publicClient: false
+    frontchannelLogout: true
+    protocol: "openid-connect"
+    attributes:
+      "access.token.lifespan": "86400"
+      "client.secret.creation.time": "1721873542"
+      "post.logout.redirect.uris": "+"
+      "oauth2.device.authorization.grant.enabled": "false"
+      "backchannel.logout.revoke.offline.tokens": "false"
+      "use.refresh.tokens": "true"
+      "oidc.ciba.grant.enabled": "false"
+      "client.use.lightweight.access.token.enabled": "false"
+      "backchannel.logout.session.required": "true"
+      "client_credentials.use_refresh_token": "false"
+      "acr.loa.map": "{}"
+      "require.pushed.authorization.requests": "false"
+      "tls.client.certificate.bound.access.tokens": "false"
+      "display.on.consent.screen": "false"
+      "token.response.type.bearer.lower-case": "false"
+    authenticationFlowBindingOverrides: {}
+    fullScopeAllowed: true
+    nodeReRegistrationTimeout: -1
+    defaultClientScopes:
+      - "web-origins"
+      - "acr"
+      - "roles"
+      - "profile"
+      - "groups"
+      - "basic"
+      - "email"
+    optionalClientScopes:
+      - "address"
+      - "phone"
+      - "offline_access"
+      - "microprofile-jwt"
+groups:
+  - name: ArgoCDAdmins
+    attributes: {}
+    realmRoles: []
+    clientRoles: {}
+    subGroups: []
+roles:
+  realm:
+    - name: {{ SPEZI_SERVICE_NAME }}-authorized-users
+      description: "Authorized users that can access {{ SPEZI_SERVICE_NAME }}"
+      composite: false
+      clientRole: false
+      containerId: "{{ SPEZI_SERVICE_NAME }}"
