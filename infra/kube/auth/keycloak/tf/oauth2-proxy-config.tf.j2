@@ -14,7 +14,7 @@ resource "keycloak_openid_client" "oauth2_proxy_client" {
 
   access_type         = "CONFIDENTIAL"
   valid_redirect_uris = [
-    "https://{{ SPEZI_SERVICE_NAME }}3.med.stanford.edu/oauth2/callback"
+    "{{ '/'.join(SPEZI_SERVICE_FQDN, 'oauth2/callback') }}"
   ]
 
   direct_access_grants_enabled = false 
