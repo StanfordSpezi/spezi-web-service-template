@@ -4,11 +4,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-// This source file is part of the Stanford Spezi open-source project
-//
-// SPDX-FileCopyrightText: 2024 Stanford University and the project authors (see CONTRIBUTORS.md)
-//
-// SPDX-License-Identifier: MIT
 import { Test, type TestingModule } from "@nestjs/testing";
 import { HealthCheckController } from "../health-check.controller";
 import { HealthCheckService } from "../health-check.service";
