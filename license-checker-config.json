@@ -1,0 +1,36 @@
+{
+  "ignore": [
+    "*.txt",
+    "*.md",
+    "LICENSE/**",
+    ".husky/**",
+    ".env/**",
+    "package.json",
+    "package-lock.json",
+    "eslint.config",
+    "prettierrc.js",
+    ".lintstagedrc.json",
+    ".gitignore"
+  ],
+  "license": "LICENSES/LICENSE.HEADER",
+  "licenseFormats": {
+    "js": {
+      "append": "\n",
+      "eachLine": {
+        "prepend": "//"
+      }
+    },
+    "ts": {
+      "append": "\n",
+      "eachLine": {
+        "prepend": "//"
+      }
+    },
+    "dotfile|^Dockerfile": {
+      "eachLine": {
+        "prepend": "# "
+      }
+    }
+  },
+  "trailingWhitespace": "TRIM"
+}
