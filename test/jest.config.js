@@ -4,13 +4,12 @@
 //
 // SPDX-License-Identifier: MIT
 
-
 const { pathsToModuleNameMapper } = require("ts-jest");
-const { compilerOptions } = require("./tsconfig.json");
+const { compilerOptions } = require("../tsconfig.json");
 
 module.exports = {
   moduleFileExtensions: ["js", "json", "ts"],
-  rootDir: ".",
+  rootDir: "../",
   transform: {
     "^.+\\.(t|j)s$": "ts-jest",
   },
