@@ -10,11 +10,11 @@ import { ConfigService } from "@nestjs/config";
 
 const MikroOrmConfig = (configService: ConfigService): Options => ({
   driver: PostgreSqlDriver,
-  host: configService.get<string>("DB_HOST", "localhost"),
-  port: configService.get<number>("DB_PORT", 5432),
-  user: configService.get<string>("DB_USER", "postgres"),
-  password: configService.get<string>("DB_PASSWORD", "password"),
-  dbName: configService.get<string>("DB_NAME", "test"),
+  host: configService.get<string>("DB_HOST"),
+  port: configService.get<number>("DB_PORT"),
+  user: configService.get<string>("DB_USER"),
+  password: configService.get<string>("DB_PASSWORD"),
+  dbName: configService.get<string>("DB_NAME"),
   entities: ["dist/**/*.entity.js"], // Path for compiled entities
   entitiesTs: ["src/**/*.entity.ts"], // Path for TypeScript entities
   debug: configService.get<boolean>("DB_DEBUG", false),
