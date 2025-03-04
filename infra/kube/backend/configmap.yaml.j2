@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ SPEZI_SERVICE_NAME }}-backend-config
+  namespace: {{ SPEZI_SERVICE_NAME }}
+data:
+  # TODO: make these conditionally render depending on whether or not user is using Postgres
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "{{ SPEZI_SERVICE_NAME }}"
+  POSTGRES_DATABASE: "{{ SPEZI_SERVICE_NAME }}"
+  PG_HOST: "{{ SPEZI_SERVICE_NAME }}-db-rw"
+
+  # TODO: make these conditionally render depending on whether or not user is using Redis
+  REDIS_HOST: "{{ SPEZI_SERVICE_NAME }}-redis-master"
+  REDIS_PORT: "6379"
+  
+  PORT: "3003"
+  MODE: "DEV"
+  ALLOWED_ORIGINS: "*,http://127.0.0.1:5173,http://localhost:5173,http://{{ SPEZI_SERVICE_FQDN }},https://{{ SPEZI_SERVICE_FQDN }}
+  AUTH_URL: "https://{{ '/'.join(SPEZI_SERVICE_FQDN, auth) }}"
+  OAUTH_REALM: "{{ SPEZI_SERVICE_NAME }}"
+  OAUTH_CLIENT_ID: "{{ SPEZI_SERVICE_NAME }}-secret"
