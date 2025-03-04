@@ -1,0 +1,25 @@
+# Example of PostgreSQL cluster
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ SPEZI_SERVICE_NAME }}-db
+  namespace: {{ SPEZI_SERVICE_NAME }}
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:13-bookworm
+  instances: 1
+
+  storage:
+    size: 1Gi
+
+  monitoring:
+    enablePodMonitor: true
+  
+  enableSuperuserAccess: true 
+
+  # TODO (wowsuchricky): pull these from configmap.
+  bootstrap:
+      initdb:
+        database: {{ SPEZI_SERVICE_NAME }}
+        owner: {{ SPEZI_SERVICE_NAME }}
+        secret: 
+          name: {{ SPEZI_SERVICE_NAME }}-postgres-credentials
