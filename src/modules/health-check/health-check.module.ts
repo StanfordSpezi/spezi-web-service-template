@@ -5,13 +5,11 @@
 // SPDX-License-Identifier: MIT
 
 import { Module } from "@nestjs/common";
-import { HealthCheckController } from "./health-check.controller";
 import { HealthCheckService } from "./health-check.service";
+import { HealthCheckController } from "./health-check.controller";
 
 @Module({
-  imports: [],
   controllers: [HealthCheckController],
   providers: [HealthCheckService],
 })
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class HealthCheckModule {}

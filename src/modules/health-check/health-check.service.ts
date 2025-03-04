@@ -8,7 +8,11 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class HealthCheckService {
-  getHello(): string {
-    return "Hello World!";
+  getHealthStatus(): { status: string; uptime: number; timestamp: string } {
+    return {
+      status: "OK",
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+    };
   }
 }

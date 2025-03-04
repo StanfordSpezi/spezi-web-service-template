@@ -12,7 +12,7 @@ export class HealthCheckController {
   constructor(private readonly healthCheckService: HealthCheckService) {}
 
   @Get()
-  getHello(): string {
-    return this.healthCheckService.getHello();
+  checkHealth(): { status: string; uptime: number; timestamp: string } {
+    return this.healthCheckService.getHealthStatus();
   }
 }

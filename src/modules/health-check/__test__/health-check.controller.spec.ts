@@ -4,27 +4,23 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Test, type TestingModule } from "@nestjs/testing";
+import { Test, TestingModule } from "@nestjs/testing";
 import { HealthCheckController } from "../health-check.controller";
 import { HealthCheckService } from "../health-check.service";
 
-describe("AppController", () => {
-  let healthCheckController: HealthCheckController;
+describe("HealthCheckController", () => {
+  let controller: HealthCheckController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [HealthCheckController],
       providers: [HealthCheckService],
     }).compile();
 
-    healthCheckController = app.get<HealthCheckController>(
-      HealthCheckController,
-    );
+    controller = module.get<HealthCheckController>(HealthCheckController);
   });
 
-  describe("root", () => {
-    it('should return "Hello World!"', () => {
-      expect(healthCheckController.getHello()).toBe("Hello World!");
-    });
+  it("should return health status", () => {
+    expect(controller.checkHealth()).toHaveProperty("status", "OK");
   });
 });
