@@ -9,6 +9,7 @@
     "package-lock.json",
     "eslint.config",
     "prettierrc.js",
+    ".prettierignore",
     ".lintstagedrc.json",
     ".gitignore"
   ],
@@ -17,13 +18,13 @@
     "js": {
       "append": "\n",
       "eachLine": {
-        "prepend": "//"
+        "prepend": "// "
       }
     },
     "ts": {
       "append": "\n",
       "eachLine": {
-        "prepend": "//"
+        "prepend": "// "
       }
     },
     "dotfile|^Dockerfile": {

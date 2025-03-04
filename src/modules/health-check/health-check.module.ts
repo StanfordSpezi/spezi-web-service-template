@@ -1,9 +1,8 @@
-//This source file is part of the Stanford Spezi open-source project
+// This source file is part of the Stanford Spezi open-source project
 //
-//SPDX-FileCopyrightText: 2024 Stanford University and the project authors (see CONTRIBUTORS.md)
+// SPDX-FileCopyrightText: 2024 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
-//SPDX-License-Identifier: MIT
-
+// SPDX-License-Identifier: MIT
 
 import { Module } from "@nestjs/common";
 import { HealthCheckController } from "./health-check.controller";
