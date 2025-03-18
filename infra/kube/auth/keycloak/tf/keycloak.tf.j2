@@ -3,7 +3,7 @@ provider "keycloak" {
     client_id     = "tofu"
     # TODO: get this automatically from the template/setup.
     client_secret = ""
-    url           = "{{ '/'.join(SPEZI_SERVICE_FQDN, 'auth') }}"
+    url           = "{{ 'https://{}/auth'.format(SPEZI_SERVICE_FQDN) }}"
 }
 
 terraform {

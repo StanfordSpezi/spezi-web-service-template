@@ -3,18 +3,18 @@ clients:
   - clientId: argocd
     name: "ArgoCD"
     description: ""
-    rootUrl: "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
-    adminUrl: "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
-    baseUrl: "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
+    rootUrl: "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
+    adminUrl: "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
+    baseUrl: "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
     surrogateAuthRequired: false
     enabled: true
     alwaysDisplayInConsole: false
     clientAuthenticatorType: "client-secret"
     secret: ${ARGOCD_OAUTH_CLIENT_SECRET}
     redirectUris:
-      - "{{ '/'.join(SPEZI_SERVICE_FQDN, argo/auth/callback) }}"
+      - "{{ 'https://{}/argo/auth/calback'.format(SPEZI_SERVICE_FQDN) }}"
     webOrigins:
-      - "{{ '/'.join(SPEZI_SERVICE_FQDN, argo) }}"
+      - "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
     notBefore: 0
     bearerOnly: false
     consentRequired: false

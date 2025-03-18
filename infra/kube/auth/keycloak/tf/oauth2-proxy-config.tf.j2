@@ -14,7 +14,7 @@ resource "keycloak_openid_client" "oauth2_proxy_client" {
 
   access_type         = "CONFIDENTIAL"
   valid_redirect_uris = [
-    "{{ '/'.join(SPEZI_SERVICE_FQDN, 'oauth2/callback') }}"
+    "{{ 'https://{}/oauth2/callback'.format(SPEZI_SERVICE_FQDN) }}"
   ]
 
   direct_access_grants_enabled = false 

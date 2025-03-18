@@ -1,12 +1,12 @@
 config:
   configFile: |-
     provider = "keycloak-oidc"
-    oidc_issuer_url = "{{ '/'.join(SPEZI_SERVICE_FQDN, 'auth/realms/', SPEZI_SERVICE_NAME) }}"
+    oidc_issuer_url = {{ 'https://{}/auth/realms/{}'.format(SPEZI_SERVICE_FQDN,SPEZI_SERVICE_NAME) }}"
     email_domains = ["*"]
     upstreams = ["static://200"]
     scope = "openid profile email groups"
     cookie_domains = ["{{ SPEZI_SERVICE_FQDN }}"]
-    redirect_url = ""{{ '/'.join(SPEZI_SERVICE_FQDN, 'oauth2/callback') }}
+    redirect_uri = {{ 'https://{}/oauth2/callback'.format(SPEZI_SERVICE_FQDN) }}"
 
 # self-managed ingress
 ingress:

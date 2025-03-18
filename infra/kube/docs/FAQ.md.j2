@@ -3,14 +3,14 @@
 ## Troubleshooting
 
 ### How do I add a user to {{ SPEZI_SERVICE_NAME }}?
-* Go to Keycloak ({{ '/'.join(https://SPEZI_SERVICE_FQDN, auth) }}), authenticate with Google, and then add a user to the {{ SPEZI_SERVICE_NAME }} realm (select the realm from the top left drop down)
+* Go to [Auth]({{ 'https://{}/auth'.format(SPEZI_SERVICE_FQDN) }}), authenticate with Google, and then add a user to the {{ SPEZI_SERVICE_NAME }} realm (select the realm from the top left drop down)
 * Make sure they have the `{{ SPEZI_SERVICE_NAME }}-authorized-users` role: ![{{ SPEZI_SERVICE_NAME }}-authorized-users realm](assets/authorized-users-role.png) 
 
 ### We merged to main, but we do not seem to see the changes live on the homepage. How do we check?
 Various ways:
-1. Check the status in ArgoCD: ({{ '/'.join(https://SPEZI_SERVICE_FQDN, argo) }}) ![argocd healthy](assets/argocd-good.png)
+1. Check the status in ArgoCD: ({{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}) ![argocd healthy](assets/argocd-good.png)
 2. Check the status of the pods and deployments in Kubernetes: `kubectl -n {{ SPEZI_SERVICE_NAME }} get pod` or similar. There are more detailed instructions in the [readme](../README.md) if needed. 
 
 ### How do I view the logs of the frontend, backend, or other components?
-* `kubectl -n {{ SPEZI_SERVICE_NAME }} logs deployment/{{ SPEZI_SERVICE_NAME }}-backend -f`
-* `kubectl -n {{ SPEZI_SERVICE_NAME }} logs deployment/{{ SPEZI_SERVICE_NAME }}-frontend -f`
+* ``kubectl -n {{ SPEZI_SERVICE_NAME }} logs deployment/{{ SPEZI_SERVICE_NAME }}-backend -f``
+* ``kubectl -n {{ SPEZI_SERVICE_NAME }} logs deployment/{{ SPEZI_SERVICE_NAME }}-frontend -f``

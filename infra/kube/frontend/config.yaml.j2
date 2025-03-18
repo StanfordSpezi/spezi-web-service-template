@@ -5,6 +5,6 @@ metadata:
   namespace: {{ SPEZI_SERVICE_NAME }}
 data:
   VITE_API_BASE: "https://{{ SPEZI_SERVICE_FQDN }}/"
-  OAUTH_AUTHORITY: ({{ '/'.join(https://SPEZI_SERVICE_FQDN, auth, realms, SPEZI_SERVICE_NAME ) }})
+  OAUTH_AUTHORITY: "{{ 'https://{}/auth/realms/{}'.format(SPEZI_SERVICE_FQDN,SPEZI_SERVICE_NAME) }}"
   OAUTH_REDIRECT_URI: "https://{{ SPEZI_SERVICE_FQDN }}"
   OAUTH_CLIENT_ID: "{{ SPEZI_SERVICE_NAME }}"
