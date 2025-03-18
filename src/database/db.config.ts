@@ -4,9 +4,9 @@
 //
 // SPDX-License-Identifier: MIT
 
-import { Options } from "@mikro-orm/core";
+import { type Options } from "@mikro-orm/core";
 import { PostgreSqlDriver } from "@mikro-orm/postgresql";
-import { ConfigService } from "@nestjs/config";
+import { type ConfigService } from "@nestjs/config";
 
 const MikroOrmConfig = (configService: ConfigService): Options => ({
   driver: PostgreSqlDriver,
@@ -14,7 +14,7 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
   port: configService.get<number>("DB_PORT"),
   user: configService.get<string>("DB_USER"),
   password: configService.get<string>("DB_PASSWORD"),
-  dbName: configService.get<string>("DB_NAME"),
+  dbName: configService.get<string>("DB_NAME", "test"),
   entities: ["dist/**/*.entity.js"], // Path for compiled entities
   entitiesTs: ["src/**/*.entity.ts"], // Path for TypeScript entities
   debug: configService.get<boolean>("DB_DEBUG", false),
@@ -22,7 +22,7 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
     path: "dist/database/migrations",
     pathTs: "src/database/migrations",
   },
-  allowGlobalContext: true, // Allows usage outside request scope
+  allowGlobalContext: true,
 });
 
-export default MikroOrmConfig;
+export { MikroOrmConfig };

@@ -5,25 +5,21 @@
 // SPDX-License-Identifier: MIT
 
 import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { MikroOrmModule } from "@mikro-orm/nestjs";
-
-import MikroOrmConfig from "@/database/db.config";
+import { ConfigModule } from "@nestjs/config";
 import { HealthCheckModule } from "@modules/health-check/health-check.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    MikroOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) =>
-        MikroOrmConfig(configService),
-      inject: [ConfigService],
-    }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env/.env" }),
+    // MikroOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: (configService: ConfigService) =>
+    //     MikroOrmConfig(configService),
+    //   inject: [ConfigService],
+    // }),
     HealthCheckModule,
   ],
   controllers: [],
   providers: [],
 })
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AppModule {}
