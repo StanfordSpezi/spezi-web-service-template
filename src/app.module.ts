@@ -4,19 +4,21 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { MikroOrmModule } from "@mikro-orm/nestjs";
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { HealthCheckModule } from "@modules/health-check/health-check.module";
+import { MikroOrmConfig } from "./database/db.config";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env/.env" }),
-     MikroOrmModule.forRootAsync({
-       imports: [ConfigModule],
-       useFactory: (configService: ConfigService) =>
-         MikroOrmConfig(configService),
-       inject: [ConfigService],
-     }),
+    MikroOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) =>
+        MikroOrmConfig(configService),
+      inject: [ConfigService],
+    }),
     HealthCheckModule,
   ],
   controllers: [],
