@@ -4,7 +4,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-//TODO: ESLint configs do not work for the
-// const { getEslintConfig } = require("@stanfordspezi/spezi-web-configurations");
+const { getEslintConfig } = require("@stanfordspezi/spezi-web-configurations");
 
-// module.exports = getEslintConfig({ tsconfigRootDir: __dirname });
+module.exports = getEslintConfig({ tsconfigRootDir: __dirname });
