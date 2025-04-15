@@ -1,0 +1,17 @@
+#
+# SPDX-FileCopyrightText: 2024 Stanford University and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: REUSE Compliance Check
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  reuseaction:
+    name: REUSE Compliance Check
+    uses: StanfordBDHG/.github/.github/workflows/reuse.yml@v2
