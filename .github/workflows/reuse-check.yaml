@@ -9,7 +9,7 @@ name: REUSE Compliance Check
 on:
   push:
     branches:
-      - main
+      - '**'
 
 jobs:
   reuseaction:
