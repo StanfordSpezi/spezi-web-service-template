@@ -11,12 +11,12 @@ import { HealthCheckModule } from "@modules/health-check/health-check.module";
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env/.env" }),
-    // MikroOrmModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   useFactory: (configService: ConfigService) =>
-    //     MikroOrmConfig(configService),
-    //   inject: [ConfigService],
-    // }),
+     MikroOrmModule.forRootAsync({
+       imports: [ConfigModule],
+       useFactory: (configService: ConfigService) =>
+         MikroOrmConfig(configService),
+       inject: [ConfigService],
+     }),
     HealthCheckModule,
   ],
   controllers: [],
