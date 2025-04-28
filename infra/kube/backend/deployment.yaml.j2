@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ SPEZI_SERVICE_NAME }}-backend
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  name: {{ spezi_service_name }}-backend
+  namespace: {{ spezi_service_name }}
   labels:
-    app: {{ SPEZI_SERVICE_NAME }}-backend
+    app: {{ spezi_service_name }}-backend
 spec:
   replicas: 1 # You can adjust this number based on your needs
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: {{ SPEZI_SERVICE_NAME }}-backend
+      app: {{ spezi_service_name }}-backend
   template:
     metadata:
       labels:
-        app: {{ SPEZI_SERVICE_NAME }}-backend
+        app: {{ spezi_service_name }}-backend
     spec:
       containers:
-        - name: {{ SPEZI_SERVICE_NAME }}-backend-container
+        - name: {{ spezi_service_name }}-backend-container
           image: "" # TODO: this still needs to be templated.  
           imagePullPolicy: Always
           resources:
@@ -29,15 +29,15 @@ spec:
             - containerPort: 3003
           envFrom:
             - configMapRef:
-                name: {{ SPEZI_SERVICE_NAME }}-backend-config
+                name: {{ spezi_service_name }}-backend-config
           env:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ SPEZI_SERVICE_NAME }}-postgres-credentials
+                  name: {{ spezi_service_name }}-postgres-credentials
                   key: username
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ SPEZI_SERVICE_NAME }}-postgres-credentials
+                  name: {{ spezi_service_name }}-postgres-credentials
                   key: password

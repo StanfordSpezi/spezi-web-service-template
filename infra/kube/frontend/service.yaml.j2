@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ SPEZI_SERVICE_NAME }}-frontend-service
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  name: {{ spezi_service_name }}-frontend-service
+  namespace: {{ spezi_service_name }}
 spec:
   selector:
-    app: {{ SPEZI_SERVICE_NAME }}-frontend
+    app: {{ spezi_service_name }}-frontend
   ports:
   - protocol: TCP
     port: 8080

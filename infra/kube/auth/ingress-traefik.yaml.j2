@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: keycloak-ingress
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  namespace: {{ spezi_service_name }}
   annotations: 
     ingress.kubernetes.io/ssl-redirect: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
@@ -12,19 +12,19 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`{{ SPEZI_SERVICE_FQDN }}`) && PathPrefix(`/oauth2`)
+  - match: Host(`{{ spezi_service_fqdn }}`) && PathPrefix(`/oauth2`)
     priority: 99
     kind: Rule
     services:
     - name: oauth2-proxy
       port: 80
     middlewares: []
-  - match: Host(`{{ SPEZI_SERVICE_FQDN }}`) && PathPrefix(`/auth`)
+  - match: Host(`{{ spezi_service_fqdn }}`) && PathPrefix(`/auth`)
     priority: 99
     kind: Rule
     services:
-    - name: {{ SPEZI_SERVICE_NAME }}-keycloak
+    - name: {{ spezi_service_name }}-keycloak
       port: 80
     middlewares: []
   tls:
-    secretName: {{ SPEZI_SERVICE_NAME }}-auth-tls
+    secretName: {{ spezi_service_name }}-auth-tls

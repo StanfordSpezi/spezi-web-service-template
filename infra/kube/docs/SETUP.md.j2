@@ -1,0 +1,57 @@
+# Setup
+
+## Pre-requisites:
+* Follow all steps here: https://github.com/stanfordmed/{{ spezi_service_name }}-deployment/blob/main/README.md#prerequisites
+* Create a static IP in GKE, get its value, and replace it [in traefik-values.yaml](https://github.com/stanfordmed/{{ spezi_service_name }}3-deployment/blob/main/kube/traefik-values.yaml#L13)
+
+
+## GKE (or, generally, Kubernetes cluster)
+1. `cd tofu/gke` then `tofu init` to download all Tofu modules, and connect to the remote backend (currently in GCP as well).
+2. See [layout](https://github.com/stanfordmed/{{ spezi_service_name }}-deployment/blob/main/docs/LAYOUT.md#bootstrapping-opentofutf) for more detailed information on how the Tofu HCL files are laid out. 
+3. `tofu plan` to make sure that everything is connected properly, and that the proposed plan looks reasonable. Note that if production is currently running, this will likely show no changes needed (or a minor kubernetes version change, usually).
+4. `tofu apply` to actually create the cluster. **This can take up to an hour if things are slow, but more likely will take around 15-25 mins (these are GCP limitations/SLA).** This should ideally be done on some sort of desktop or server to make sure that it is not put to sleep midway through. If you are creating production for the first time, that is less risky, but it can cause potential issues otherwise. 
+5. You should now have a GKE cluster! You can view it [here](https://console.cloud.google.com/kubernetes/list/overview?project={{ spezi_service_name }}-3-dev)
+
+## Kube Resources
+1. Create the {{ spezi_service_name }} namespace in Kubernetes: `kubectl create namespace {{ spezi_service_name }}`
+1. Update all unsealed secrets with the desired values for production (files will look like `secret.yaml.example`). 
+1. Update any `config.yaml` or `config.yaml.example` files with desired configuration. Nearly each subdirectory will contain these. 
+1. Seal each secret as you go along, so they are ready to be applied when you run the subsequent tofu steps in this section. Example seal command: `kubeseal --controller-name sealed-secrets --controller-namespace kube-system -o yaml < argocd/argo-server/github-secret.yaml > argocd/argo-server/github-secret-sealed.yaml`
+1. Currently, a few of the services need to be set up separately because we set them up via Helm charts (see https://github.com/stanfordmed/{{ spezi_service_name }}3-deployment/issues/6). Install them via the following commands:
+    ```bash
+    # add the bitnami helm repo, which contains many common helm charts
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm repo update
+
+    # install the cloudnative-pg postgres CRDs
+    kubectl apply -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.17/releases/cnpg-1.17.5.yaml
+
+    # install traefik
+    helm repo add traefik https://traefik.github.io/charts
+    helm upgrade --install -n {{ spezi_service_name }} -f kube/traefik-values.yaml traefik traefik/traefik
+
+    # install redis
+    helm upgrade --install {{ spezi_service_name }}-redis bitnami/redis -n {{ spezi_service_name }} -f shared/redis-values.yaml --set auth.enabled=false
+
+    # install keycloak
+    helm upgrade --install -n {{ spezi_service_name }} {{ spezi_service_name }}-keycloak -f auth/keycloak/values.yaml oci://registry-1.docker.io/bitnamicharts/keycloak
+
+    # install oauth2-proxy
+    helm repo add oauth2-proxy https://oauth2-proxy.github.io/manifests
+    helm upgrade --install oauth2-proxy oauth2-proxy/oauth2-proxy -n {{ spezi_service_name }} -f auth/oauth2-proxy/oauth2proxy-values.yaml
+
+    # install argocd
+    helm repo add argo https://argoproj.github.io/argo-helm
+    helm upgrade --install -n {{ spezi_service_name }} argocd argo/argo-cd -f argocd/values.yaml
+    ```
+1. `cd tofu/kube-bootstrap` then `tofu init`. Same reasoning as above, and the state backend is also in GCP.
+1. `tofu plan` to view the plan, then `tofu apply` to apply the plan. This will instantiate all of the services/pods/resources. This also typically takes 5-10 minutes to run. 
+1. Verify that the server is reachable at https://{{ spezi_service_fqdn }} which should auto-redirect you to a login page. 
+
+## Keycloak
+1. Most of Keycloak should be set up declaratively via the json we have configured in auth/keycloak/config-cli, but as the team iterates on different changes you may need to keep that json dump updated (you can export an up to date copy via the Keycloak UI). 
+1. ** As a backup for the above (e.g. if the KC API changes, or similar)**, there is also some included Tofu HCL in `auth/keycloak/tf` that can set up the realm similarly to how it is dumped in the json dumps.
+1. To log in to Keycloak initially, you need to use the username `user` (it was `admin` prior to 25.x, so, try that if ever `user` does not seem to work) and password that is auto-generated which you can retrieve by running `kubectl -n {{ spezi_service_name }} get secret {{ spezi_service_name }}-keycloak -o jsonpath='{.data.admin-password}' | base64 -d && echo`
+1. As of the time of writing, to add new users to Keycloak, you should have them attempt to sign in with Google which will create their account in Keycloak and give them a 4xx or 5xx error; after that, assign them the `{{ spezi_service_name }}-authorized-users` role in Keycloak via the UI, and then they should be able to access the application going forward. There is very likely a better way to do this as Keycloak is highly customizable.
+
+

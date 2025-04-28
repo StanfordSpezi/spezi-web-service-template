@@ -3,13 +3,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: argocd-cm
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  namespace: {{ spezi_service_name }}
 data:
-  url: {{ SPEZI_SERVICE_FQDN }}
+  url: {{ spezi_service_fqdn }}
   statusbadge.enabled: "true"
   oidc.config: |
     name: Keycloak
-    issuer: {{ SPEZI_SERVICE_FQDN }}/auth/realms/{{ SPEZI_SERVICE_NAME }}-secret
+    issuer: {{ spezi_service_fqdn }}/auth/realms/{{ spezi_service_name }}-secret
     clientID: argocd
     clientSecret: $oidc-secret:oidc.keycloak.clientSecret
     requestedScopes: ["openid", "profile", "email", "groups"]
@@ -18,7 +18,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: argocd-rbac-cm
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  namespace: {{ spezi_service_name }}
 data:
   policy.default: role:''
   policy.csv: |

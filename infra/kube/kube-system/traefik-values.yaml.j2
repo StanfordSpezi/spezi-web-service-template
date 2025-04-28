@@ -4,7 +4,7 @@ service:
   enabled: true
   type: LoadBalancer
   spec:
-    loadBalancerIP: "{{ SPEZI_SERVICE_STATIC_IP }}"
+    loadBalancerIP: "{{ spezi_service_static_ip }}"
 
 logs:
   general:

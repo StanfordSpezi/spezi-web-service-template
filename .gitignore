@@ -128,3 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# TODO: we may not want this, depending how projects want to seed their initial repos!
+rendered_infra/*

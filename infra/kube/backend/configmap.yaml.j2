@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ SPEZI_SERVICE_NAME }}-backend-config
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  name: {{ spezi_service_name }}-backend-config
+  namespace: {{ spezi_service_name }}
 data:
   # TODO: make these conditionally render depending on whether or not user is using Postgres
   POSTGRES_PORT: "5432"
-  POSTGRES_DB: "{{ SPEZI_SERVICE_NAME }}"
-  POSTGRES_DATABASE: "{{ SPEZI_SERVICE_NAME }}"
-  PG_HOST: "{{ SPEZI_SERVICE_NAME }}-db-rw"
+  POSTGRES_DB: "{{ spezi_service_name }}"
+  POSTGRES_DATABASE: "{{ spezi_service_name }}"
+  PG_HOST: "{{ spezi_service_name }}-db-rw"
 
   # TODO: make these conditionally render depending on whether or not user is using Redis
-  REDIS_HOST: "{{ SPEZI_SERVICE_NAME }}-redis-master"
+  REDIS_HOST: "{{ spezi_service_name }}-redis-master"
   REDIS_PORT: "6379"
   
   PORT: "3003"
   MODE: "DEV"
-  ALLOWED_ORIGINS: "{{ 'https://{}'.format(SPEZI_SERVICE_FQDN),'http://{}'.format(SPEZI_SERVICE_FQDN) }},http://127.0.0.1,http://localhost:5173"
-  AUTH_URL: "{{'https://{}/auth'.format(SPEZI_SERVICE_FQDN)}}"
-  OAUTH_REALM: "{{ SPEZI_SERVICE_NAME }}"
-  OAUTH_CLIENT_ID: "{{ SPEZI_SERVICE_NAME }}-secret"
+  ALLOWED_ORIGINS: "{{ 'https://{}'.format(spezi_service_fqdn),'http://{}'.format(spezi_service_fqdn) }},http://127.0.0.1,http://localhost:5173"
+  AUTH_URL: "{{'https://{}/auth'.format(spezi_service_fqdn)}}"
+  OAUTH_REALM: "{{ spezi_service_name }}"
+  OAUTH_CLIENT_ID: "{{ spezi_service_name }}-secret"

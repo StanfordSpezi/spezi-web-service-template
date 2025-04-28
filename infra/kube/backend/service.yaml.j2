@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ SPEZI_SERVICE_NAME }}-backend-service
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  name: {{ spezi_service_name }}-backend-service
+  namespace: {{ spezi_service_name }}
 spec:
   selector:
-    app: {{ SPEZI_SERVICE_NAME }}-backend
+    app: {{ spezi_service_name }}-backend
   ports:
   - protocol: TCP
     port: 3003

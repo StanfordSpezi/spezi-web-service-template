@@ -2,8 +2,8 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: {{ SPEZI_SERVICE_NAME }}-db
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  name: {{ spezi_service_name }}-db
+  namespace: {{ spezi_service_name }}
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:13-bookworm
   instances: 1
@@ -19,7 +19,7 @@ spec:
   # TODO (wowsuchricky): pull these from configmap.
   bootstrap:
       initdb:
-        database: {{ SPEZI_SERVICE_NAME }}
-        owner: {{ SPEZI_SERVICE_NAME }}
+        database: {{ spezi_service_name }}
+        owner: {{ spezi_service_name }}
         secret: 
-          name: {{ SPEZI_SERVICE_NAME }}-postgres-credentials
+          name: {{ spezi_service_name }}-postgres-credentials

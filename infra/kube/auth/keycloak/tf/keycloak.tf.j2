@@ -1,9 +1,10 @@
 # currently requires manual setup: https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs
 provider "keycloak" {
-    client_id     = "tofu"
-    # TODO: get this automatically from the template/setup.
-    client_secret = ""
-    url           = "{{ 'https://{}/auth'.format(SPEZI_SERVICE_FQDN) }}"
+    client_id     = "admin-cli"
+    username      = "user"
+    # TODO: have ansible template this password. This is a randomly generated password shown for example purposes.
+    password      = "Pz8UQp2dD5"
+    url           = "{{ 'https://{}/auth'.format(spezi_service_fqdn) }}"
 }
 
 terraform {

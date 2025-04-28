@@ -2,10 +2,10 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: oauth2-proxy
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  namespace: {{ spezi_service_name }}
 spec:
   forwardAuth:
-    address: http://oauth2-proxy.{{ SPEZI_SERVICE_NAME }}.svc.cluster.local/oauth2/auth_or_start
+    address: http://oauth2-proxy.{{ spezi_service_name }}.svc.cluster.local/oauth2/auth_or_start
     trustForwardHeader: true
     authResponseHeaders:
       - X-Auth-Request-User
@@ -17,8 +17,8 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: {{ SPEZI_SERVICE_NAME }}-ingress
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  name: {{ spezi_service_name }}-ingress
+  namespace: {{ spezi_service_name }}
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     ingress.kubernetes.io/proxy-buffer-size: "128k"
@@ -27,21 +27,21 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`{{ SPEZI_SERVICE_FQDN }}`) && PathPrefix(`/`)
+  - match: Host(`{{ spezi_service_fqdn }}`) && PathPrefix(`/`)
     priority: 1
     kind: Rule
     services:
-    - name: {{ SPEZI_SERVICE_NAME }}-frontend-service
+    - name: {{ spezi_service_name }}-frontend-service
       port: 8080
     middlewares:
     - name: oauth2-proxy
-  - match: Host(`{{ SPEZI_SERVICE_FQDN }}`) && PathPrefix(`/api/v1`)
+  - match: Host(`{{ spezi_service_fqdn }}`) && PathPrefix(`/api/v1`)
     priority: 2
     kind: Rule
     services:
-    - name: {{ SPEZI_SERVICE_NAME }}-backend-service
+    - name: {{ spezi_service_name }}-backend-service
       port: 3003
     middlewares:
     - name: oauth2-proxy
   tls:
-    secretName: {{ SPEZI_SERVICE_NAME }}-main-tls-secret
+    secretName: {{ spezi_service_name }}-main-tls-secret

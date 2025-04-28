@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ SPEZI_SERVICE_NAME }}
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  name: {{ spezi_service_name }}
+  namespace: {{ spezi_service_name }}
 spec:
   project: default
   source:
-    repoURL: {{ SPEZI_SERVICE_REPO_URL }}
+    repoURL: {{ spezi_service_repo_url }}
     path: .
     targetRevision: main
     directory:

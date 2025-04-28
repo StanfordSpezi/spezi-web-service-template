@@ -1,20 +1,20 @@
-realm: "{{ SPEZI_SERVICE_NAME }}"
+realm: "{{ spezi_service_name }}"
 clients:
   - clientId: argocd
     name: "ArgoCD"
     description: ""
-    rootUrl: "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
-    adminUrl: "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
-    baseUrl: "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
+    rootUrl: "{{ 'https://{}/argo'.format(spezi_service_fqdn) }}"
+    adminUrl: "{{ 'https://{}/argo'.format(spezi_service_fqdn) }}"
+    baseUrl: "{{ 'https://{}/argo'.format(spezi_service_fqdn) }}"
     surrogateAuthRequired: false
     enabled: true
     alwaysDisplayInConsole: false
     clientAuthenticatorType: "client-secret"
     secret: ${ARGOCD_OAUTH_CLIENT_SECRET}
     redirectUris:
-      - "{{ 'https://{}/argo/auth/calback'.format(SPEZI_SERVICE_FQDN) }}"
+      - "{{ 'https://{}/argo/auth/calback'.format(spezi_service_fqdn) }}"
     webOrigins:
-      - "{{ 'https://{}/argo'.format(SPEZI_SERVICE_FQDN) }}"
+      - "{{ 'https://{}/argo'.format(spezi_service_fqdn) }}"
     notBefore: 0
     bearerOnly: false
     consentRequired: false
@@ -65,8 +65,8 @@ groups:
     subGroups: []
 roles:
   realm:
-    - name: {{ SPEZI_SERVICE_NAME }}-authorized-users
-      description: "Authorized users that can access {{ SPEZI_SERVICE_NAME }}"
+    - name: {{ spezi_service_name }}-authorized-users
+      description: "Authorized users that can access {{ spezi_service_name }}"
       composite: false
       clientRole: false
-      containerId: "{{ SPEZI_SERVICE_NAME }}"
+      containerId: "{{ spezi_service_name }}"

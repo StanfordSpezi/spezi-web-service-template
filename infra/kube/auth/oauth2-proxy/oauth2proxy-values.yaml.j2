@@ -1,12 +1,12 @@
 config:
   configFile: |-
     provider = "keycloak-oidc"
-    oidc_issuer_url = {{ 'https://{}/auth/realms/{}'.format(SPEZI_SERVICE_FQDN,SPEZI_SERVICE_NAME) }}"
+    oidc_issuer_url = "{{ 'https://{}/auth/realms/{}'.format(spezi_service_fqdn,spezi_service_name) }}"
     email_domains = ["*"]
     upstreams = ["static://200"]
     scope = "openid profile email groups"
-    cookie_domains = ["{{ SPEZI_SERVICE_FQDN }}"]
-    redirect_uri = {{ 'https://{}/oauth2/callback'.format(SPEZI_SERVICE_FQDN) }}"
+    cookie_domains = ["{{ spezi_service_fqdn }}"]
+    redirect_url = "{{ 'https://{}/oauth2/callback'.format(spezi_service_fqdn) }}"
 
 # self-managed ingress
 ingress:
@@ -14,8 +14,8 @@ ingress:
 
 extraArgs:
   - --skip-provider-button=true
-  - --whitelist-domain={{ SPEZI_SERVICE_FQDN }}
-  - --allowed-role={{ SPEZI_SERVICE_NAME }}-authorized-users
+  - --whitelist-domain={{ spezi_service_fqdn }}
+  - --allowed-role={{ spezi_service_name }}-authorized-users
   - --pass-access-token=true
   - --cookie-csrf-expire=60m
   - --pass-authorization-header=true

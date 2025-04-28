@@ -5,7 +5,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: {{ SPEZI_SERVICE_ADMIN_EMAIL }}
+    email: {{ spezi_service_admin_email }}
     privateKeySecretRef:
       # TODO: we want to use -dev/staging here most likely at first, to avoid rate limiting. Then when the user promotes their 
       # service to "prod", we change this to prod. Template this later.

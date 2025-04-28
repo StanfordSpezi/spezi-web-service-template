@@ -2,10 +2,10 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: oauth2-proxy-argo
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  namespace: {{ spezi_service_name }}
 spec:
   forwardAuth:
-    address: http://oauth2-proxy.{{ SPEZI_SERVICE_NAME }}.svc.cluster.local/oauth2/auth?allowed_groups=ArgoCDAdmins
+    address: http://oauth2-proxy.{{ spezi_service_name }}.svc.cluster.local/oauth2/auth?allowed_groups=ArgoCDAdmins
     trustForwardHeader: true
     authResponseHeaders: []
     authRequestHeaders: []
@@ -14,7 +14,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: oauth2-errors
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  namespace: {{ spezi_service_name }}
 spec:
   errors:
     status:
@@ -28,7 +28,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: argocd-ingress
-  namespace: {{ SPEZI_SERVICE_NAME }}
+  namespace: {{ spezi_service_name }}
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
@@ -36,7 +36,7 @@ spec:
     - websecure
   routes:
     - kind: Rule
-      match: Host(`{{ SPEZI_SERVICE_FQDN }}`) && PathPrefix(`/argo`)
+      match: Host(`{{ spezi_service_fqdn }}`) && PathPrefix(`/argo`)
       middlewares:
         - name: oauth2-proxy
         - name: oauth2-errors
@@ -45,7 +45,7 @@ spec:
         - name: argocd-server
           port: 80
     - kind: Rule
-      match: Host(`{{ SPEZI_SERVICE_FQDN }}`) && PathPrefix(`/argo`) && Header(`Content-Type`, `application/grpc`)
+      match: Host(`{{ spezi_service_fqdn }}`) && PathPrefix(`/argo`) && Header(`Content-Type`, `application/grpc`)
       middlewares:
         - name: oauth2-proxy
         - name: oauth2-errors
@@ -55,4 +55,4 @@ spec:
           port: 80
           scheme: h2c
   tls:
-    secretName: {{ SPEZI_SERVICE_NAME }}-tls-secret
+    secretName: {{ spezi_service_name }}-tls-secret

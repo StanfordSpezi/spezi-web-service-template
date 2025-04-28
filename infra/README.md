@@ -1,7 +1,7 @@
-# {{ spezi_service_name }}
+# speziwebservicetest
 
 <!-- markdown-link-check-disable-next-line -->
-[Live Deployment](https://{{ spezi_service_fqdn }})
+[Live Deployment](https://svc1.muci.sh)
 
 # TODO: Add this once we template it.
 [ArgoCD](https://example.com)
