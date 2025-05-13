@@ -14,7 +14,7 @@ const MikroOrmConfig = (configService: ConfigService): Options => ({
   port: configService.get<number>("DB_PORT"),
   user: configService.get<string>("DB_USER"),
   password: configService.get<string>("DB_PASSWORD"),
-  dbName: configService.get<string>("DB_NAME", "test"),
+  dbName: configService.get<string>("DB_NAME", "spezi-platform"),
   entities: ["dist/**/*.entity.js"], // Path for compiled entities
   entitiesTs: ["src/**/*.entity.ts"], // Path for TypeScript entities
   debug: configService.get<boolean>("DB_DEBUG", false),
