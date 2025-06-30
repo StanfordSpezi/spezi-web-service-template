@@ -1,0 +1,40 @@
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,jsonnet
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,jsonnet
+
+### Jsonnet ###
+# Dependency directories
+vendor/
+
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# Key for service account for GCP
+key.json
+
+# Any .yaml secrets files, as a sanity check, since we are using Sealed Secrets.
+*secret.yaml
+
+# htaccess / basic auth
+.auth
+
+# Terraform/OpenTofu
+.terraform*
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,jsonnet

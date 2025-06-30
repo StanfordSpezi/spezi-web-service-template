@@ -1,0 +1,16 @@
+# FAQ
+
+## Troubleshooting
+
+### How do I add a user to {{ spezi_service_name }}?
+* Go to [Auth]({{ 'https://{}/auth'.format(spezi_service_fqdn) }}), authenticate with Google, and then add a user to the {{ spezi_service_name }} realm (select the realm from the top left drop down)
+* Make sure they have the `{{ spezi_service_name }}-authorized-users` role: ![{{ spezi_service_name }}-authorized-users realm](assets/authorized-users-role.png) 
+
+### We merged to main, but we do not seem to see the changes live on the homepage. How do we check?
+Various ways:
+1. Check the status in ArgoCD: ({{ 'https://{}/argo'.format(spezi_service_fqdn) }}) ![argocd healthy](assets/argocd-good.png)
+2. Check the status of the pods and deployments in Kubernetes: `kubectl -n {{ spezi_service_name }} get pod` or similar. There are more detailed instructions in the [readme](../README.md) if needed. 
+
+### How do I view the logs of the frontend, backend, or other components?
+* ``kubectl -n {{ spezi_service_name }} logs deployment/{{ spezi_service_name }}-backend -f``
+* ``kubectl -n {{ spezi_service_name }} logs deployment/{{ spezi_service_name }}-frontend -f``

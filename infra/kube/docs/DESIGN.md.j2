@@ -1,0 +1,29 @@
+# {{ spezi_service_name }} Infra/Backend Design
+
+## Background
+{{ spezi_service_name }} is a 3-tier application (Frontend*, Backend, DB) that enables users to get started with creating a Spezi service in the most easy way possible.
+
+## Overall Design Considerations
+{{ spezi_service_name }}'s infra was designed as such:
+1. **Be cloud-agnostic**, and generally able to run across a variety of public clouds or even on-prem if customers need this. Using K8S via public cloud will be our prescribed method of deployment, but we will support other reasonable pathways if possible.
+2. **Minimize vendor-lockin for AuthN/AuthZ**. Different setups will require different SSO providers, compliance requirements, etc.
+3. **Minimize manual configuration and operation**. This deployment project will strive to automate the entirety of the initial setup, as well as set up sane alerting and monitoring for those who operate it. 
+4. Generally, comply with the [Twelve-Factor App](https://12factor.net/) framework.
+
+## Local Development Defaults
+- Separate repositories for Frontend and Backend, both using git-flow and merging into main only when they are ready to be auto-deployed to the cluster.
+- ArgoCD to auto-deploy kube resources to the cluster. 
+- GH Actions to update manifests in the IAC repo/submodule, as well as publish images to GCR/GAR or the registry of your choosing.
+- Staging vs Prod environment, where things ideally "soak" in staging for a period of time before rolling out to production. 
+
+## Compute, Services, Infrastructure
+- {{ spezi_service_name }} will be deployed on [Kubernetes](https://kubernetes.io/) in order to achieve the design principles above. For customers who do not have access to public cloud, this repo will eventually provide either a KiND (Kube in Docker) or similar set of scripts to bootstrap a K8s cluster.
+- Initially, we will provision a Kubernetes cluster on Google Kubernetes Engine to simplify needing to set up and manage Kubernetes.
+- We will use [OpenTofu](https://opentofu.org/) to provision any infrastructure, as well as to configure any components (such as Keycloak mentioned below) that are able to be configured declaratively.
+
+
+## Identity and Access Management, AuthN, AuthZ
+- We will use [Keycloak](https://www.keycloak.org/) for Identity and Access Management (AuthN, AuthZ). This is to remain vendor-agnostic and not use any public cloud proprietary offerings.
+- Keycloak will contain a `{{ spezi_service_name }}` realm, high level groups that control access to the application as a whole, and RBAC.
+- Users, groups, roles, scopes, and claims will all be managed in Keycloak. The [nest-keycloak-connect](https://www.npmjs.com/package/nest-keycloak-connect) library will be used to implement Guards in the backend such that only the appropriately authorized users will have access to certain resources. 
+- **Future**: Users will likely want to have a basic administration console that uses [keycloak-admin-client](https://www.npmjs.com/package/@keycloak/keycloak-admin-client) to programmatically manage Keycloak resources, since the Keycloak ui/ux is a bit lacking. 

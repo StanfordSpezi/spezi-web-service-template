@@ -1,0 +1,49 @@
+# Repo Layout
+
+## Bootstrapping: OpenTofu/TF
+* [tofu/](/tofu/) contains HCL that is needed to provision "ground-floor" aspects of the infra, such as a GKE cluster or Kube-in-Docker.
+    - `gke` contains HCL that will bootstrap a GKE cluster. This currently makes a 2-node cluster in `us-west1`, running on `e2-standard-4` nodes that are spot instances (meaning they are pre-emptible at any time, but only cost about ~40% of the full price).
+        - At the [time of writing (9/15/2024)](https://cloud.google.com/products/calculator?hl=en&dl=CiRhNzlkNTQwNy05NGM0LTRjNjQtYWI4Ny0wMmYwM2NjMDU2ZTUQDxokMzI2NTM2QTQtNTREOS00MDQxLTg1RkUtMkYyMTMyMkUyNUQ5), this costs $151.63/mo to run the current production environment.
+    - `kube-bootstrap` contains HCL that can do the initial deploy of all of the Kubernetes services. Once they are up and running, `argocd` handles the git-ops aspect of keeping the cluster in sync with what is in this repository.
+* This is run by going into either directory above and running `tofu init`, followed by `tofu plan` and if the plan looks good, `tofu apply`. 
+
+## Kube: Common Files
+There will be a few common things that are in nearly each sub-directory, so they will be documented here instead of everywhere.
+* `secret-sealed.yaml`: this contains a Sealed Secret, meaning that it is encrypted at the server and safe to store in the repository. 
+    * To generate these, run `kubeseal`, e.g. `kubeseal --controller-name sealed-secrets --controller-namespace kube-system -o yaml < backend/secret.yaml > backend/secret-sealed.yaml`
+    * **Note that the original secret that generated the encrypted secret should NOT be stored in the repo**
+* `secret.yaml.example` generally shows what the unsealed-secret would look like, format-wise. Note that `secret.yaml` files are in .gitignore for safety reasons.
+* `service.yaml` Kube Service object that describes the way to connect to a particular service. 
+* `config.yaml` Kube ConfigMap object that is used to dynamically configure a service.
+* `ingress.yaml` Kube Ingress object that is used to define Traefik route objects (technically IngressRoute objects) to declaratively list how certain services should be connected to from external to the cluster. 
+
+## [argocd/](/argocd/)
+* This contains everything needed to run and configure argocd, for git-ops. 
+* There is a top-level {{ spezi_service_name }}3 app file which declaratively configures the "app" in argocd to auto-deploy. 
+* [argo-server/](/argocd/argo-server/) contains everything needed to configure the argocd server itself, including values.yaml for Helm, and various config plus secrets.
+* [argo-server/ingress-traefik.yaml](/argocd/argo-server/ingress-traefik.yaml) contains a separate Ingress that routes any gRPC and HTTP requests sent to `APP_ROOT/argo`, to argocd.
+
+## [auth/](/auth/)
+* This contains everything related to authn and authz, including Keycloak, oauth2-proxy, and an ingress controller dedicated to auth.
+* Both Keycloak and oauth2-proxy are set up with Helm, so their associated values.yaml files are included. 
+
+## [backend/](/backend/)
+* Everything needed to provision the backend of {{ spezi_service_name }}3, including a DB seeder `InitContainer` as well as the CQL translation service.
+
+## [db/](/db/)
+* Everything needed to run the Postgres DB that is currently being used for {{ spezi_service_name }}3's backend. This includes a SealedSecret, a ConfigMap, and a Cluster custom resource that uses the `cloudnative-pg` operator. 
+
+## [docs/](/docs/)
+* Contains various documentation, runbooks, etc. Great place to start and to search for anything one may need.
+
+## [frontend/](/frontend/)
+* Everything needed to run the {{ spezi_service_name }}3 frontend, including a ConfigMap, Deployment, Service, and SealedSecret. 
+
+## [kube/](/kube/)
+* Contains a Helm values.yaml file to set up Traefik (the primary Ingress Controller) for the entire cluster. This is needed to actually set up the various Ingresses for external access to the cluster's resources, TLS termination, etc. 
+
+## [shared/](/shared/)
+* Contains a few shared cluster-level resources, such as the Ingress for {{ spezi_service_name }}3 itself, a helm values.yaml file to configure Redis (needed for the {{ spezi_service_name }}3 backend and other misc uses), as well as an optional IngressRoute to access the Traefik dashboard.
+
+## [util/](/util/)
+* Contains a few bash scripts that may be of use to any operators of this infrastructure, such as a script to forward multiple kubernetes ports at once, and a script to run a few of the initial Helm installations. 

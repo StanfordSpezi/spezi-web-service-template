@@ -1,0 +1,6 @@
+terraform {
+  backend "gcs" {
+    bucket  = "{{ spezi_service_name }}-tf-state-prod"
+    prefix  = "terraform/state/gke"
+  }
+}

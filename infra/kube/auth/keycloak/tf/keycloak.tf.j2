@@ -1,0 +1,17 @@
+# currently requires manual setup: https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs
+provider "keycloak" {
+    client_id     = "admin-cli"
+    username      = "user"
+    # TODO: have ansible template this password. This is a password shown for example purposes.
+    password      = "changeme_to_another_password!"
+    url           = "{{ 'https://{}/auth'.format(spezi_service_fqdn) }}"
+}
+
+terraform {
+    required_providers {
+        keycloak = {
+            source = "mrparkers/keycloak"
+            version = ">= 4.0.0"
+        }
+    }
+}

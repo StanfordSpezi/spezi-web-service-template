@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ spezi_service_name }}-frontend-config
+  namespace: {{ spezi_service_name }}
+data:
+  VITE_API_BASE: "https://{{ spezi_service_fqdn }}/"
+  OAUTH_AUTHORITY: "{{ 'https://{}/auth/realms/{}'.format(spezi_service_fqdn,spezi_service_name) }}"
+  OAUTH_REDIRECT_URI: "https://{{ spezi_service_fqdn }}"
+  OAUTH_CLIENT_ID: "{{ spezi_service_name }}"

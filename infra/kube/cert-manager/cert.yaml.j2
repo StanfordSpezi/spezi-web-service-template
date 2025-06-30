@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ spezi_service_name }}-main-tls-cert
+  namespace: {{ spezi_service_name }}
+spec:
+  commonName: {{ spezi_service_fqdn }}
+  secretName: {{ spezi_service_name }}-main-tls-secret
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - "{{ spezi_service_fqdn }}"

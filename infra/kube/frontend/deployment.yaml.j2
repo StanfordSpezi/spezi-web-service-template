@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ spezi_service_name }}-frontend
+  namespace: {{ spezi_service_name }}
+  labels:
+    app: {{ spezi_service_name }}-frontend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ spezi_service_name }}-frontend
+  template:
+    metadata:
+      labels:
+        app: {{ spezi_service_name }}-frontend
+    spec:
+      containers:
+        - name: {{ spezi_service_name }}-frontend-container
+          image: "" # TODO: need to template this.
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 100m
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: {{ spezi_service_name }}-frontend-config
