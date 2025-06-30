@@ -11,8 +11,7 @@
     source_dir_relpath: "{{ playbook_dir }}/../infra" 
     source_dir: "{{ source_dir_relpath | realpath }}"
     # Define the target directory for the rendered output files
-    dest_dir_relpath: "{{ playbook_dir }}/../rendered_infra/"
-    dest_dir: "{{ dest_dir_relpath | realpath }}"
+    dest_dir: "{{ output_directory | realpath }}"
 
 
 

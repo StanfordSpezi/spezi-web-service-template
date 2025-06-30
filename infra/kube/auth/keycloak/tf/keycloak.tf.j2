@@ -2,8 +2,8 @@
 provider "keycloak" {
     client_id     = "admin-cli"
     username      = "user"
-    # TODO: have ansible template this password. This is a randomly generated password shown for example purposes.
-    password      = "Pz8UQp2dD5"
+    # TODO: have ansible template this password. This is a password shown for example purposes.
+    password      = "changeme_to_another_password!"
     url           = "{{ 'https://{}/auth'.format(spezi_service_fqdn) }}"
 }
 

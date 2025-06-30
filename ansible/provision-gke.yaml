@@ -10,7 +10,9 @@
     terraform_directory: "{{ terraform_relative_path | realpath }}"
 
     gcp_project_id: "{{ spezi_service_gcp_project_id }}"
-    gcp_zone: "us-west1-a"
+
+    # TODO: should just use the var for this instead of setting it here.
+    gcp_zone: "us-west1-c"
 
     # TODO: should use the service name probably, not the project ID? Can be either.
     gke_cluster_name: "{{spezi_service_gcp_project_id}}-gke"

@@ -4,15 +4,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-variable "gke_username" {
-  default     = ""
-  description = "gke username"
-}
-
-variable "gke_password" {
-  default     = ""
-  description = "gke password"
-}
 
 variable "gke_num_nodes" {
   default     = 1
@@ -23,6 +14,11 @@ variable "gke_num_nodes" {
 data "google_container_engine_versions" "gke_version" {
   location = var.zone
   version_prefix = "1.31."
+}
+
+# Static IP address for GKE
+resource "google_compute_address" "ip_address" {
+  name = "{{ spezi_service_gcp_project_id }}-static-ip"
 }
 
 resource "google_container_cluster" "primary" {
@@ -37,6 +33,7 @@ resource "google_container_cluster" "primary" {
 
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
+  deletion_protection = false # TODO: This should be true once we're past the iteration phase.
 }
 
 # Separately Managed Node Pool
